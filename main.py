@@ -28,3 +28,15 @@ for x in data:
 
 data.head()
 data = data.dropna(axis = 0)
+
+
+def get_dfpm(dfp):
+    # transformer = MinMaxScaler().fit(dfp)
+    scaler = MinMaxScaler()
+    col = dfp.columns
+    processed = scaler.fit_transform(dfp)
+    dfpm = pd.DataFrame(processed, columns=col)
+    return dfpm
+
+
+dfpm = get_dfpm(data)
