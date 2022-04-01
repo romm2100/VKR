@@ -40,3 +40,50 @@ def get_dfpm(dfp):
 
 
 dfpm = get_dfpm(data)
+
+
+def build_model(xtrn):
+    model = models.Sequential()
+    model.add(layers.Dense(64, activation='relu', input_shape=(xtrn.shape[1],)))
+    model.add(layers.Dense(64, activation='relu'))
+    model.add(layers.Dense(1))
+    model.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
+    return model
+
+
+result = ['Соотношение матрица-наполнитель']
+inputcol = ['Плотность, кг/м3', 'модуль упругости, ГПа',
+            'Количество отвердителя, м.%', 'Содержание эпоксидных групп,%_2',
+            'Температура вспышки, С_2', 'Поверхностная плотность, г/м2',
+            'Модуль упругости при растяжении, ГПа', 'Прочность при растяжении, МПа',
+            'Потребление смолы, г/м2', 'Угол нашивки, град',
+            'Шаг нашивки', 'Плотность нашивки']
+x_train = dfpm[inputcol]
+y_train = dfpm[result]
+xtrn, xtest, ytrn, ytest = train_test_split(x_train, y_train, test_size=0.3)
+model = build_model(xtrn)
+
+k = 4
+num_val_samples = len(xtrn) // k
+num_epochs = 50
+all_scores = []
+for i in range(k):
+    val_data = xtrn[i * num_val_samples: (i + 1) * num_val_samples]
+    val_targets = ytrn[i * num_val_samples: (i + 1) * num_val_samples]
+    partial_train_data = np.concatenate(
+        [xtrn[:i * num_val_samples],
+         xtrn[(i + 1) * num_val_samples:]],
+        axis=0)
+    partial_train_targets = np.concatenate(
+        [ytrn[:i * num_val_samples],
+         ytrn[(i + 1) * num_val_samples:]],
+        axis=0)
+
+model.fit(
+    partial_train_data,
+    partial_train_targets,
+    epochs=num_epochs,
+    batch_size=4,
+    validation_data=(val_data, val_targets),
+    verbose=0
+)
