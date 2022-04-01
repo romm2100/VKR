@@ -87,3 +87,4 @@ model.fit(
     validation_data=(val_data, val_targets),
     verbose=0
 )
+transformer = MinMaxScaler().fit(data)
