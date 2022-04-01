@@ -112,3 +112,7 @@ for i in data.columns:
     a += 1
     if a == 13:
         break
+
+modified = transformer.transform(user_input)
+user_input_modified = pd.DataFrame(modified, columns = data.columns)
+user_input_modified.drop(result, inplace = True, axis = 1)
