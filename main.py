@@ -88,3 +88,14 @@ model.fit(
     verbose=0
 )
 transformer = MinMaxScaler().fit(data)
+
+
+def prepare_for_input(data):
+    df_user = data.copy(deep=True)
+    df_user = df_user.reset_index()
+    df_user = df_user.drop(labels=range(1, len(data)), axis=0)
+    df_user.drop(['index'], inplace=True, axis=1)
+    return df_user
+
+
+user_input = prepare_for_input(data)
