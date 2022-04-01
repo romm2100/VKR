@@ -118,3 +118,13 @@ user_input_modified = pd.DataFrame(modified, columns = data.columns)
 user_input_modified.drop(result, inplace = True, axis = 1)
 
 pred = model.predict(user_input_modified)
+
+pred_inversed = pd.DataFrame([])
+pred_inversed.at[0, 0] = float(pred)
+for i in range(1, 13):
+    p = 0
+    pred_inversed.at[0, i] = float(p)
+
+
+Y_trans = transformer.inverse_transform(pred_inversed)
+print(result[0] + ': ' + str(Y_trans[0, 0]))
