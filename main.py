@@ -16,3 +16,4 @@ def import_data():
 
 
 data = import_data()
+data.drop(['Unnamed: 0'], inplace=True, axis=1)
