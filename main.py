@@ -99,3 +99,16 @@ def prepare_for_input(data):
 
 
 user_input = prepare_for_input(data)
+
+print('Введите параметры:')
+a = 0
+for i in data.columns:
+    if a != 0:
+        print(data.columns[a])
+        y = input()
+        user_input[data.columns[a]].values[0] = float(y)
+    else:
+        user_input[data.columns[a]].values[0] = 0
+    a += 1
+    if a == 13:
+        break
