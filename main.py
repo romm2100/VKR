@@ -116,3 +116,5 @@ for i in data.columns:
 modified = transformer.transform(user_input)
 user_input_modified = pd.DataFrame(modified, columns = data.columns)
 user_input_modified.drop(result, inplace = True, axis = 1)
+
+pred = model.predict(user_input_modified)
